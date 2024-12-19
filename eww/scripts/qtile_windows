@@ -1,0 +1,150 @@
+#!/usr/bin/env python
+from libqtile import hook
+from libqtile.lazy import lazy
+from libqtile.command.client import InteractiveCommandClient
+from sys import argv
+from time import sleep
+import subprocess
+import cairocffi
+import sys
+from os.path import isfile
+
+
+icon_path = "./resources/icons"
+
+c = InteractiveCommandClient()
+max_winname_len = 30
+# couldn't find a way to adjust the image size in scss
+icon_size = "icon_height"
+
+# id = 54525966
+
+
+def get_icon(wm_class, id):
+
+    #    print(wm_class, id)
+    filename = f"{icon_path}/{wm_class}.png"
+    if icon_path is None:
+        return None
+    if isfile(filename):
+        return filename
+
+    out = subprocess.check_output(
+        ["xprop", "-id", str(id), "-notype", "32c", "_NET_WM_ICON"]
+    )
+    #    print(len(out))
+    #    print(out)
+    raw_data = out.decode("utf-8").split("=")[1]
+    #    print(f"raw data: {raw_data[:40]}")
+    if raw_data.strip() == "":
+        return None
+    outlist = [int(o.strip()) for o in raw_data.split(",")]
+    if len(outlist) == 250 * 250:
+        return None
+    width = outlist.pop(0)
+    height = outlist.pop(0)
+    #    print(len(outlist), len(outlist) // (width * height))
+
+    imgdata = bytearray()
+    for o in outlist:
+        imgdata.extend(o.to_bytes(4, sys.byteorder))
+
+    surf = cairocffi.ImageSurface(cairocffi.FORMAT_ARGB32, width, height, data=imgdata)
+    surf.write_to_png(filename)
+    return filename
+
+
+def get_win_str(win, active_window_id=None):
+    if win["minimized"]:
+        win_prefix = "_ "
+    elif win["maximized"]:
+        win_prefix = "[] "
+    elif win["maximized"]:
+        win_prefix = "[F] "
+    else:
+        win_prefix = ""
+    if win["id"] == active_window_id or win["minimized"]:
+        onclick_action = f"qtile cmd-obj -o window {win['id']} -f toggle_minimize "
+    else:
+        onclick_action = f"qtile cmd-obj -o window {win['id']} -f focus "
+
+    if win["id"] == active_window_id:
+        box_class = "win_box win_active"
+    else:
+        box_class = "win_box win_inactive"
+
+    output = ""
+    output += f'(button :onclick "{onclick_action}" (box :class "{box_class}" :space-evenly false  '
+
+    win_disp_name = win_prefix + win["name"]
+    if len(win_disp_name) > (max_winname_len):
+        win_disp_name = win_disp_name[: max_winname_len - 1] + "…"
+    icon_file = get_icon(win["wm_class"][0], win["id"])
+
+    if icon_file is not None:
+        output += f'(image :class "win_icon" :image-width {icon_size} :image-height {icon_size} :path "{icon_file}")'
+        # output += f'(image :class "win_icon"  :path "{icon_file}")'
+    output += f'(label :class "win_name" :text "{win_disp_name}")'
+    output += ")) "
+
+    lazy.windows()
+
+    return output
+
+
+def get_windows():
+    c.get_groups()
+    try:
+        active_window_id = subprocess.check_output(
+            ["xdotool", "getwindowfocus"],
+        )
+        active_window_id = int(active_window_id)
+    except subprocess.CalledProcessError:
+        active_window_id = None
+
+    groups = c.get_groups()
+    screens = c.get_screens()
+    windows = c.windows()
+    # determine current active group:
+    current_screen_id = c.screen.info()["index"]
+    current_group = None
+    for screen in screens:
+        if screen["index"] == int(current_screen_id):
+            current_group = screen["group"]
+            break
+
+    # is that correct? does that give us the SCREEN layout, or the one for the currently FOCUSSED one?
+    #    print(current_screen_id, current_group)
+    #    win_infos = []
+    #    print(windows)
+    # output = "(defwidget windows[]"
+    output = '(box :class "windows" :space-evenly false'
+    for win in windows:
+        if win["group"] is not None and win["group"] == current_group:
+            # print(win)
+            # ex    icon_file = get_icon(win["wm_class"][0], win["id"])
+            #            win_infos.append(get_win_str(win), active_window_id)
+            output += get_win_str(win, active_window_id)
+    #    print("  ".join(win_infos))
+    output += ")"
+
+    print(output)
+
+
+#    layout = groups[current_group]["layout"]
+#    print(f"{path_prefix}{layout}{path_suffix}")
+
+
+# ji    current_screen_id = c.screen.info()["index"]
+#    current_group = int(screens[current_screen_id]["group"])
+#    visible_groups = [s["group"] for s in screens]
+# @hook.focus_change
+# def trigger_change(x):
+
+
+if __name__ == "__main__":
+    get_windows()
+
+#    while True:
+#        get_layout()
+#        sleep(1)

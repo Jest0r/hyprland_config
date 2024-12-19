@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+from libqtile import hook
+from libqtile.lazy import lazy
+from libqtile.command.client import InteractiveCommandClient
+from sys import argv
+from time import sleep
+
+c = InteractiveCommandClient()
+
+path_prefix = "./resources/layout-icons/layout-"
+path_suffix = ".png"
+
+
+def get_layout():
+    c.get_groups()
+
+    groups = c.get_groups()
+    screens = c.get_screens()
+
+    # determine current active group:
+    current_screen_id = c.screen.info()["index"]
+    current_group = None
+    for screen in screens:
+        if screen["index"] == int(current_screen_id):
+            current_group = screen["group"]
+            break
+
+    # is that correct? does that give us the SCREEN layout, or the one for the currently FOCUSSED one?
+    #    print(current_screen_id, current_group)
+
+    layout = groups[current_group]["layout"]
+    print(f"{path_prefix}{layout}{path_suffix}")
+
+
+# ji    current_screen_id = c.screen.info()["index"]
+#    current_group = int(screens[current_screen_id]["group"])
+#    visible_groups = [s["group"] for s in screens]
+
+
+if __name__ == "__main__":
+    get_layout()
+#    while True:
+#        get_layout()
+#        sleep(1)

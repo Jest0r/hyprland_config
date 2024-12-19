@@ -1,0 +1,43 @@
+#!/home/hmedchen/venv/bin/python
+from libqtile import hook
+from libqtile.lazy import lazy
+from libqtile.command.client import InteractiveCommandClient
+from sys import argv
+from time import sleep
+
+c = InteractiveCommandClient()
+
+
+# @hook.subscribe.layout_change
+def update_workspaces(layout, grp):
+    visible_css_tags = ["grp_invisible", "grp_visible"]
+    active_css_tags = ["grp_inactive", "grp_active"]
+    groups = c.get_groups()
+    screens = c.get_screens()
+
+    current_screen_id = c.screen.info()["index"]
+    current_group = int(screens[current_screen_id]["group"])
+    visible_groups = [s["group"] for s in screens]
+
+    output = ""
+    output += '(box :class "workspaces"'
+    output += ':orientation "h"'
+    output += ":space-evenly true"
+    output += ':halign "start"'
+    output += ":spacing 10"
+    for gid, group in enumerate(list(groups.values()), start=1):
+        is_visible = int(str(gid) in visible_groups)
+        is_active = int(gid == current_group)
+
+        output += f'(button :class "{visible_css_tags[is_visible]} {active_css_tags[is_active]}" :onclick "qtile cmd-obj -o group {group["name"]} -f toscreen" "{group["label"]}")'
+
+    output += ")"
+
+    # flush=True is important to eliminate long update delays!
+    print(output, flush=True)
+
+
+if __name__ == "__main__":
+    while True:
+        update_workspaces(0, 0)
+        sleep(0.2)

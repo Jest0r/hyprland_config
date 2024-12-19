@@ -1,0 +1,118 @@
+@import "theme.scss";
+// @import "scss/powermenu.scss";
+@import "scss/qtile.scss";
+
+* {
+  all: unset; //Unsets everything so you can style everything from scratch
+}
+
+//Global Styles
+//  background-color: #3a3a3a;
+  //background-color: rgba(200, 200, 100, 0.0);
+.bar {
+  background-color: $bgcol-bar;
+  color: $fgcol-light;
+  padding: 3px;
+}
+
+// Styles on classes (see eww.yuck for more information)
+
+.right_widgets slider {
+  all: unset;
+  color: #ffd5cd;
+}
+
+.systray {
+  background-color: $bgcol-accent-1;
+  border-radius: 50px;
+  margin: 0 5px 0 5px ;
+  padding: 3px 5px 3px 5px ;
+}
+
+.metric scale trough highlight {
+  all: unset;
+  background-color: $bgcol-accent-2;
+  color: #000000;
+  border-radius: 10px;
+}
+.metric scale trough {
+  all: unset;
+  background-color: #4e4e4e;
+  border-radius: 50px;
+  min-height: 20px;
+  min-width: 5px;
+  margin: 5px 5px 5px 3px;
+//  margin-left: 5px;
+//  margin-right: 10px;
+}
+.label  {
+  font-size: $fontsize-main;
+  // font-size: large;
+}
+
+
+.grp_visible{
+  background-color: $bgcol-accent-1;
+  color: $fgcol-light;
+}
+.grp_invisible {
+  border-color: $bgcol-accent-1;
+  border-style: solid;
+  border-width: 2px;
+  color: $fgcol-light;
+}
+
+.grp_active {
+  color: $fgcol-light-hilight;
+  background-color: $bgcol-accent-1-l1;
+}
+
+.spotify {
+  font-size: 1.1em;
+  border-radius: 20px;
+  padding-left: 10px;
+  padding-right: 3px;
+  background-color: $bgcol-spotify;
+  color: $fgcol-spotify;
+  &.unopened {
+    // padding-left
+  }
+}
+
+.centerbox {
+  // padding for previous menu button
+  // padding-right: 50px;
+  padding-right: 0px;
+  opacity: 1;
+}
+
+.powermenu_toggle {
+  font-size: $fontsize-large;
+  font-weight: bold;
+  min-width: 30px;
+  padding: 0px 5px 0px 0px;
+  margin: 0px 5px 0px 10px;
+  background-color: $bgcol-accent-2;
+  border-radius: 16px;
+ // padding-left: 6px;
+  //padding-right: 3px;
+
+}
+
+.weatherw {
+//  vertical-align: middle;
+}
+
+.datebox {
+  font-size: $fontsize-small;
+  &.time {
+    margin: 0 0 0 0;
+  }
+  &.local {
+    font-weight: bold;
+    // background-color: $bgcol-accent-1;
+  }
+  &.utc {
+    // background-color: $bgcol-accent-1;
+  }
+}

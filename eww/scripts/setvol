@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "up" ]; then
+    event="+"
+else
+    event="-"
+fi
+
+amixer -q -D pulse set Master 1%${event}
+#echo "volume $event"

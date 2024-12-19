@@ -1,0 +1,94 @@
+(defvar revealPowermenu false) 
+(defwindow powermenu
+;;    :monitor 0 ;; wayland users may need this
+    :stacking "fg"
+    ; :windowtype "normal"
+    :wm-ignore true
+    :transition "slidedown"
+    :geometry (geometry :x "40%" :y "40%" :width "100px" :height "100px" :anchor "top left")
+    (powermenu_widget_2)
+  )
+      ; hibernate='󰤄'
+      ; shutdown='⏻'
+      ; reboot=''
+      ; lock='󰷛 '
+      ; suspend='󰏦'
+      ; logout='󰍃'
+      ; yes=''
+      ; no=''
+
+(defwidget powermenu_widget_2 []
+  ; (box
+      ; :orientation "v"
+    (revealer 
+      :reveal true
+      ; :class "hl-on-hover"
+      :transition "slidedown"
+      :class "powermenu"
+      :duration "1000ms"
+      (box
+        :class "powermenu_open"
+        :orientation "v"
+        (button :class "powermenu_button" 
+                :onclick "systemctl poweroff"
+                (label :text "⏻"))
+        (button :class "powermenu_button" 
+                :onclick "systemctl reboot"
+                (label :text ""))
+        (button :class "powermenu_button" 
+                :onclick "lockscreen"
+                (label :text "󰷛"))
+        (button :class "powermenu_button" 
+                :onclick "qtile cmd-obj -o root -f shutdown"
+                (label :text "󰍃"))
+      )
+  ; )
+))
+
+;; alternative combined with button
+(defwindow powermenu_expand
+;;    :monitor 0 ;; wayland users may need this
+    :stacking "fg"
+    :windowtype "normal"
+    :wm-ignore true
+    :transition "slidedown"
+    :geometry (geometry :x "0" :y "0" :width "150" :height "20" :anchor "top right")
+    (powermenu_widget))
+
+;;(defwidget powermenu_layout [var varname ?class ?duration ?transition]
+(defwidget powermenu_widget []
+  (box
+    ;; :class "powermenu_revealer menu-revealer"
+      :orientation "v"
+    (menu-revealer :class "hl-on-hover"
+      :var revealPowermenu
+      :varname "revealPowermenu"
+      :transition "slideup"
+      :class "powermenu"
+      :duration "1000ms"
+      (hovered-sign :var revealPowermenu
+        (label :text "󰐥" :class "header closed")
+        (label :text "󰇘" :class "header hopen")
+      )
+      (box
+        :class "powermenu_open"
+        :orientation "v"
+        (button :class "powermenu_button" 
+                :onclick "systemctl poweroff"
+                (label :text "⏻"))
+        (button :class "powermenu_button" 
+                :onclick "systemctl reboot"
+                (label :text ""))
+        (button :class "powermenu_button" 
+                :onclick "lockscreen"
+                (label :text "󰷛"))
+        (button :class "powermenu_button" 
+                :onclick "qtile cmd-obj -o root -f shutdown"
+                (label :text "󰍃"))
+      )
+      (box 
+        :class "powermenu_footer"
+       ;; (label :text "") 
+      )
+  )))
+  

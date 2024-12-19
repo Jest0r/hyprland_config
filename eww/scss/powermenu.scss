@@ -1,0 +1,39 @@
+
+.powermenu{
+  background-color: rgba(200,200,200,0)
+}
+.header{
+  background-color: $bgcol-accent-1;
+  min-width: 30px;
+  min-height: 30px;
+  font-size: $fontsize-large;
+  border-radius: 25px;
+  margin: 3px;
+  padding: 2px
+}
+
+.powermenu_revealer {
+  background-color: #664433;
+}
+.powermenu_open {
+//  background: rgba(255,0,0, 1) ;
+//  background-image: url("./resources/brushes_b.png") ;
+  background-position: 0px 0px;
+  background: url("./resources/brushes_r.png");
+  opacity: 1;
+
+//  background-blend-mode: normal;
+//'  background-color: rgba(200, 200, 200, 0);
+  min-width: 150px;
+  min-height: 450px;
+}
+.powermenu_footer {
+  background-color: $bgcol-accent-1;
+  min-height: 5px;
+  border-radius: 0px 0px 5px 5px;
+}
+.powermenu_button {
+  color: $fgcol-light;;
+  font-size: 40px;
+  font-weight: bold;
+}

@@ -1,0 +1,29 @@
+(defvar icon_height "22")
+
+(defwidget layout []
+    (button :class "layout":onclick "qtile cmd-obj -o cmd -f next_layout"
+    (image :class "layout icon"
+           :image-height icon_height
+           :path layout_listen))
+    )
+
+(defpoll layout_listen 
+       :interval "0.5s" 
+       :initial "./resources/layout-icons/layout-plasma.png"
+       "./scripts/qtile_layout" )
+
+
+(defwidget windows[]
+       (literal :content window_list)
+      ;;(box (label :text window_list))
+       )
+
+(defpoll window_list 
+       :interval "0.5s" 
+       "./scripts/qtile_windows")
+
+
+(defwidget workspaces []
+       (literal :content workspaces_listen))
+(deflisten workspaces_listen 
+       "./scripts/qtile_workspaces")

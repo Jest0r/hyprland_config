@@ -1,0 +1,3 @@
+(defvar revealSpotify false)
+(defvar revealVolume false)
+(defvar revealNotify false)

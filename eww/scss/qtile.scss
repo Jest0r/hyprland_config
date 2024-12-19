@@ -1,0 +1,48 @@
+
+.workspaces button {
+    opacity: 1;
+    font-family: $fontfam-mono;
+    font-size: $fontsize-main;
+   //  height: 20px;
+    // width: 20px;
+     min-width: 30px;
+     min-height: 30px;
+     border-radius: 25px;
+   }
+.workspaces button:hover {
+     background-color: $bgcol-accent-1;
+   }
+   
+.windows{
+     padding: 5px 0px 5px 0px;
+   
+   }
+.win_box {
+    &.win_active {
+     border-color: $bgcol-accent-1;
+     border-style: solid;
+     border-width: 2px;
+    }
+    &.win_inactive {
+     border-style: none;
+//     background-color: $bgcol-accent-1;
+    }
+     border-radius: 5px;
+     padding: 0px 3px 0px 3px;
+     margin: 0px 3px 0px 3px;
+   }
+
+.win_icon {
+   //  height: 15px;
+   //  margin:0px;
+    // background-color: #555555;
+   }
+.win_name {
+     font-size: $fontsize-small;
+     //background-color: #999999;
+   
+   }
+
+.layout {
+    padding: 0px 3px 0px 3px;
+}
