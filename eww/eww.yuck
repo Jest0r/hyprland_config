@@ -1,7 +1,10 @@
-(include "funcs.yuck")
-(include "modules/variables.yuck")
+(include "modules/funcs.yuck")
+(include "variables.yuck")
 (include "modules/revealer.yuck")
 (include "modules/qtile.yuck")
+(include "modules/updates.yuck")
+(include "modules/weather.yuck")
+
 ; (include "modules/powermenu.yuck")
 
 ; (defvar revealSpotify false)
@@ -20,8 +23,21 @@
 
 ; ================== WINDOW ===========
 (defwindow bar
+  :windowtype "dock"
+  ; :systray false
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "100%"
+                      :height "10px"
+                      :anchor "top center")
+  :reserve (struts :side "top" :distance "40px")
+  (bar)
+  )
+
+(defwindow mainbar
   :monitor "<primary>"
   :windowtype "dock"
+  ; :systray true
   :geometry (geometry :x "0%"
                       :y "0%"
                       :width "100%"
@@ -52,7 +68,8 @@
 
 (defwidget right_widgets []
   (box :class "right_widgets" :orientation "h" :space-evenly false :halign "end"
-    (weather)
+    (os_updates)
+    (weather_bar)
     (volume_widget)
     (systray :class "systray" :prepend-new true)
 
@@ -63,7 +80,7 @@
 ;--------- METRICS -------
 (defwidget metrics[]
   (box :class "metrics"
-    :space-evently false
+    ; :space-evently false
     (metric :label ""
             :value {EWW_RAM.used_mem_perc}
             :onchange "")
@@ -141,11 +158,7 @@
 )
 
 
-; ------- WEATHER STUFF ------
-(defpoll weather :initial "(label :text \"loading...\")" :interval 600 "scripts/weather.py") 
 
-(defwidget weather []
-  (literal :content weather))
 ; ------- MUSIC STUFF ------
 
 ; (defwidget music []

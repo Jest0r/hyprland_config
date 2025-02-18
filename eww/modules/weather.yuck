@@ -1,0 +1,22 @@
+; ------- WEATHER STUFF ------
+(defpoll cur_weather :initial "(label :text \"loading...\")" :interval 600 "scripts/weather.py") 
+
+(defwidget weather_bar []
+    (box :class 'weather'
+        (literal :content cur_weather)
+    )
+)
+
+
+(defwindow weather_forecast []
+    :geometry (geometry :x "0%"
+    :y "-0%"
+    :width "50%"
+    :height "50%"
+    :anchor "center center")
+    (box  :class "weather forecast"
+    (label :text "hello")
+
+    )
+
+)

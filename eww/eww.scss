@@ -1,6 +1,8 @@
 @import "theme.scss";
 // @import "scss/powermenu.scss";
-@import "scss/qtile.scss";
+@import "modules/qtile.scss";
+@import "modules/weather.scss";
+@import "modules/updates.scss";
 
 * {
   all: unset; //Unsets everything so you can style everything from scratch
@@ -97,10 +99,6 @@
  // padding-left: 6px;
   //padding-right: 3px;
 
-}
-
-.weatherw {
-//  vertical-align: middle;
 }
 
 .datebox {

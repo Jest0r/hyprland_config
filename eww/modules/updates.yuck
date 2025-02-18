@@ -1,0 +1,13 @@
+(defpoll update_count :initial 0 :interval 300 'aptitude search "~U" |wc -l')
+
+(defwidget os_updates []
+    (box 
+        :class "osupdates"
+        :visible {update_count > 0}
+        (button
+            :onclick '/usr/bin/update-manager &'
+            (label 
+                :text "${update_count} Update(s)")
+        )
+    )
+)
